@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from html.parser import HTMLParser
+from urllib.error import URLError
 from urllib.request import urlopen
 
 
@@ -40,12 +41,16 @@ class DataSpass(HTMLParser):
 
 def main():
     parser = DataSpass()
+    try:
+        with urlopen('http://datapass.de/home?continue=true') as resp:
+            html = resp.read().decode('utf-8')
+            parser.feed(html)
+    except URLError:
+        return False
 
-    with urlopen('http://datapass.de/home?continue=true') as resp:
-        html = resp.read().decode('utf-8')
-        parser.feed(html)
-    return parser.result
+    print(parser.result)
+    return True
 
 
 if __name__ == '__main__':
-    print(main(), end='')
+    exit(not main())
