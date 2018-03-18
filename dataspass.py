@@ -28,14 +28,14 @@ class DataSpass(HTMLParser):
 
     def handle_data(self, data):
         if self.__matched:
-            self.__result.append(''.join([data.strip(), ' ']))
+            self.__result.append(data.strip())
 
     def error(self, message):
         pass
 
     @property
     def result(self):
-        return ''.join(self.__result).strip()
+        return ' '.join(self.__result).strip()
 
 
 def main():
