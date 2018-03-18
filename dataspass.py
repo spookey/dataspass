@@ -10,21 +10,16 @@ class DataSpass(HTMLParser):
     __result = list()
 
     def handle_starttag(self, tag, attrs):
-        if tag == 'div' and [
-                a for a in attrs if 'class' in a[0] and 'barTextBelow' in a[-1]
-        ]:
-            self.__matched = True
-        if tag == 'td' and [
-                a for a in attrs if 'class' in a[0] and any([
-                    all([
-                        b in a[-1] for b in [c, 'infoValue']
-                    ])
-                ] for c in ['expiryTime', 'remainingTime'])
-        ]:
-            self.__matched = True
+        if tag in ('div', 'td'):
+            for name, values in attrs:
+                if name == 'class' and any([
+                        val in values for val in
+                        ('barTextBelow', 'remainingTime', 'expiryTime')
+                ]):
+                    self.__matched = True
 
     def handle_endtag(self, tag):
-        if self.__matched and any([tag == a for a in ['div', 'td']]):
+        if self.__matched and tag in ('div', 'td'):
             self.__matched = False
 
     def handle_data(self, data):
