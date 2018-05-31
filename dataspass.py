@@ -2,6 +2,7 @@
 
 from html.parser import HTMLParser
 from urllib.error import URLError
+from urllib.parse import urlencode
 from urllib.request import urlopen
 
 
@@ -36,8 +37,14 @@ class DataSpass(HTMLParser):
 
 def main():
     parser = DataSpass()
+    address = '?'.join([
+        'http://datapass.de/home', urlencode({
+            'continue': 'true', 'lang': 'en'
+        })
+    ])
+
     try:
-        with urlopen('http://datapass.de/home?continue=true') as resp:
+        with urlopen(address) as resp:
             html = resp.read().decode('utf-8')
             parser.feed(html)
     except URLError:
