@@ -3,7 +3,7 @@
 from datetime import timedelta
 from json import loads
 from json.decoder import JSONDecodeError
-from ssl import PROTOCOL_SSLv23, SSLContext
+from ssl import PROTOCOL_TLS_CLIENT, SSLContext
 from sys import exit as _exit
 from typing import IO, Final, Optional, Sequence, TypedDict, cast
 from urllib.error import URLError
@@ -35,7 +35,7 @@ STAT = TypedDict(
 
 
 def fetch_data(address: str) -> Optional[str]:
-    ssl_ctx: Final[SSLContext] = SSLContext(PROTOCOL_SSLv23)
+    ssl_ctx: Final[SSLContext] = SSLContext(PROTOCOL_TLS_CLIENT)
     request: Final[Request] = Request(address)
 
     try:
