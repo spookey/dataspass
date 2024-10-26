@@ -1,15 +1,10 @@
-CMD_VENV		:=	virtualenv
-
 DIR_VENV		:=	venv
-VER_PY			:=	3.9
-
-DIR_LIBS		:=	$(DIR_VENV)/lib/python$(VER_PY)/site-packages
 
 CMD_BLACK		:=	$(DIR_VENV)/bin/black
 CMD_ISORT		:=	$(DIR_VENV)/bin/isort
 CMD_MYPY		:=	$(DIR_VENV)/bin/mypy
-CMD_PIP			:=	$(DIR_VENV)/bin/pip$(VER_PY)
-CMD_PY			:=	$(DIR_VENV)/bin/python$(VER_PY)
+CMD_PIP			:=	$(DIR_VENV)/bin/pip3
+CMD_PY			:=	$(DIR_VENV)/bin/python3
 CMD_PYLINT		:=	$(DIR_VENV)/bin/pylint
 
 SCR_MAIN		:=	dataspass.py
@@ -33,7 +28,7 @@ help:
 
 
 $(DIR_VENV):
-	$(CMD_VENV) -p "python$(VER_PY)" "$(DIR_VENV)"
+	python3 -m venv "$(DIR_VENV)"
 	$(CMD_PIP) install -U pip
 
 $(CMD_BLACK) $(CMD_ISORT) $(CMD_MYPY) $(CMD_PYLINT): | $(DIR_VENV)
@@ -59,7 +54,6 @@ black: $(CMD_BLACK)
 define _isort
 	$(CMD_ISORT) \
 		--settings-file ".isort.cfg" \
-		--py "$(subst .,,$(VER_PY))" \
 			$(1)
 endef
 
@@ -72,7 +66,6 @@ isort: $(CMD_ISORT)
 define _mypy
 	$(CMD_MYPY) \
 		--config-file ".mypy.ini" \
-		--python-version "$(VER_PY)" \
 			$(1)
 endef
 
